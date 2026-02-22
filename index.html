@@ -109,6 +109,17 @@
       opacity:0.5; cursor:not-allowed; transform:none; pointer-events:none;
     }
 
+    /* Language switcher */
+    .lang-switcher{ display:flex; gap:0.35rem; justify-content:flex-end; margin-bottom:0.6rem; }
+    .lang-btn{
+      padding:0.25rem 0.65rem; border:2px solid var(--ink); background:transparent;
+      cursor:pointer; font-family:'Roboto',sans-serif; font-weight:700; font-size:0.78rem;
+      color:var(--ink); text-transform:uppercase; letter-spacing:1px;
+      transition:background .15s, color .15s;
+    }
+    .lang-btn.active{ background:var(--ink); color:var(--paper); }
+    .lang-btn:hover:not(.active){ background:rgba(42,42,42,0.08); }
+
     @media (max-width:900px){
       .container{ grid-template-columns: 1fr; }
       .avatar{ width:120px; height:120px; }
@@ -127,7 +138,7 @@
         <img src="/assets/84ae33e58f1fd27c12ff10dd3ee0078a49d046b120a3387b93c3e911afe3d7aa.jpg" alt="Murat Can Sarıyıldız — fotoğrafı">
       </a>
       <h1>Murat Can Sarıyıldız</h1>
-      <div class="role">Game Design Student · Video Game Enthusiast</div>
+      <div class="role" data-i18n="role">Game Design Student · Video Game Enthusiast</div>
 
       <div class="socials" aria-label="Sosyal bağlantılar">
         <a class="btn" href="https://flowkareinxd.itch.io" target="_blank" rel="noopener noreferrer" aria-label="itch.io">
@@ -150,23 +161,27 @@
         <div class="small">© 2025 Murat Can Sarıyıldız</div>
         <div class="small">•</div>
         <!-- Kullanıcının talebine göre: CV henüz eklenmedi şeklinde gösteriliyor -->
-        <div class="small">CV dosyanız henüz eklenmedi</div>
+        <div class="small" data-i18n="footer_cv">CV dosyanız henüz eklenmedi</div>
       </footer>
     </aside>
 
     <!-- RIGHT: panel with kısa bio + projeler -->
     <section class="panel" aria-label="Projeler ve bağlantılar">
+      <div class="lang-switcher" aria-label="Dil seçici / Language switcher">
+        <button class="lang-btn" id="btn-tr" lang="tr" onclick="setLang('tr')">TR</button>
+        <button class="lang-btn" id="btn-en" lang="en" onclick="setLang('en')">EN</button>
+      </div>
       <div class="intro">
-        <p class="bio">Merhaba ben Murat Can — oyun tasarımı üzerine eğitim alıyorum. Burada küçük projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.</p>
+        <p class="bio" data-i18n="bio">Merhaba ben Murat Can — oyun tasarımı üzerine eğitim alıyorum. Burada küçük projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.</p>
         <div class="cta-links">
           <!-- CV butonu pasif; kullanıcı CV eklemediği için disabled -->
-          <a class="btn disabled" href="#" aria-disabled="true" title="CV henüz eklenmedi"> 
+          <a class="btn disabled" href="#" aria-disabled="true" data-i18n-title="cv_btn_title" title="CV henüz eklenmedi"> 
             <svg viewBox="0 0 24 24" class="icon-left" aria-hidden="true"><path d="M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#111"/></svg>
-            CV (henüz eklenmedi)
+            <span data-i18n="cv_btn">CV (henüz eklenmedi)</span>
           </a>
 
           <!-- E-posta şu an boş bırakıldı; daha sonra eklenecek -->
-          <span class="small" title="E-posta adresi henüz eklenmedi">E-posta: (henüz eklenmedi)</span>
+          <span class="small" data-i18n="email" data-i18n-title="email_title" title="E-posta adresi henüz eklenmedi">E-posta: (henüz eklenmedi)</span>
         </div>
       </div>
 
@@ -198,6 +213,62 @@
 
     </section>
   </div>
+
+  <script>
+    /* i18n — TR / EN dil seçimi */
+    (function(){
+      var dict = {
+        tr: {
+          title:        'Murat Can Sarıyıldız | Game Designer',
+          role:         'Game Design Student · Video Game Enthusiast',
+          bio:          'Merhaba ben Murat Can — oyun tasarımı üzerine eğitim alıyorum. Burada küçük projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.',
+          footer_cv:    'CV dosyanız henüz eklenmedi',
+          cv_btn:       'CV (henüz eklenmedi)',
+          cv_btn_title: 'CV henüz eklenmedi',
+          email:        'E-posta: (henüz eklenmedi)',
+          email_title:  'E-posta adresi henüz eklenmedi'
+        },
+        en: {
+          title:        'Murat Can Sarıyıldız | Game Designer',
+          role:         'Game Design Student · Video Game Enthusiast',
+          bio:          "Hey, I'm Murat Can — studying game design. This is where I'll keep my small projects, resources, and contact info. I'll be adding projects soon.",
+          footer_cv:    'CV not added yet',
+          cv_btn:       'CV (not added yet)',
+          cv_btn_title: 'CV not added yet',
+          email:        'Email: (not added yet)',
+          email_title:  'Email address not added yet'
+        }
+      };
+
+      function applyLang(lang) {
+        var t = dict[lang] || dict['tr'];
+        document.title = t.title;
+        document.documentElement.lang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n');
+          if (t[key] !== undefined) el.textContent = t[key];
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n-title');
+          if (t[key] !== undefined) el.title = t[key];
+        });
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.id === 'btn-' + lang);
+        });
+        try { localStorage.setItem('lang', lang); } catch(e) {}
+      }
+
+      window.setLang = function(lang) { applyLang(lang); };
+
+      var lang;
+      try { lang = localStorage.getItem('lang'); } catch(e) {}
+      if (!lang) {
+        lang = (navigator.language || navigator.userLanguage || '').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+      }
+      if (lang !== 'tr' && lang !== 'en') lang = 'tr';
+      applyLang(lang);
+    })();
+  </script>
 
   <script>
     /* Görsel hatalarında placeholder gösterme (mevcut avatar dosyası yoksa bu devreye girer) */
