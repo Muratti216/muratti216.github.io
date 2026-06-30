@@ -5,8 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Murat Can Sarıyıldız | Digital Game Design Student </title>
   <meta name="description" content="Murat Can Sarıyıldız — Digital Game Design Student. Projeler, CV ve iletişim.">
-  <!-- Kullanıcı tarafından belirtilen avatar dosyasını favicon olarak da kullandım -->
+  
+  <!-- Open Graph for social sharing -->
+  <meta property="og:title" content="Murat Can Sarıyıldız — Digital Game Design Student" />
+  <meta property="og:description" content="Portfolio of Murat Can Sarıyıldız, studying Digital Game Design. Check out projects, resources, and contact info." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://muratti216.github.io/" />
+  <meta property="og:image" content="https://muratti216.github.io/assets/84ae33e58f1fd27c12ff10dd3ee0078a49d046b120a3387b93c3e911afe3d7aa.jpg" />
+  
+  <!-- Favicon -->
   <link rel="icon" href="/assets/84ae33e58f1fd27c12ff10dd3ee0078a49d046b120a3387b93c3e911afe3d7aa.jpg" type="image/jpeg">
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap');
 
@@ -32,6 +41,7 @@
       background: radial-gradient(600px 300px at 10% 20%, rgba(255,200,120,0.18), transparent 15%),
                   radial-gradient(500px 250px at 90% 80%, rgba(120,160,255,0.14), transparent 12%);
       animation: gradientShift 12s linear infinite alternate;
+      will-change: transform;
     }
     @keyframes gradientShift{ 0%{ transform: translate3d(0,0,0) } 50%{ transform: translate3d(8%,-4%,0) } 100%{ transform: translate3d(-6%,6%,0) } }
 
@@ -66,16 +76,14 @@
     }
     .btn svg{ width:18px; height:18px; display:block; }
 
-      /* Daha şeffaf, daha hafif highlight için önerilen .btn:hover */
     .btn:hover {
-      background: rgba(42, 42, 42, 0.06);    /* hafif arka plan */
-      border-color: rgba(42, 42, 42, 0.12);  /* hafif sınır vurgusu */
-      color: var(--ink);                     /* yazı rengi sabit kalsın */
-      transform: translateY(-3px);           /* hafif yukarı hareket */
+      background: rgba(42, 42, 42, 0.06);
+      border-color: rgba(42, 42, 42, 0.12);
+      color: var(--ink);
+      transform: translateY(-3px);
       transition: background 180ms ease, transform 180ms ease, border-color 180ms ease;
     }
 
-    /* (İsteğe bağlı) Klavye erişimi için focus stili */
     .btn:focus {
       outline: 3px solid rgba(201, 66, 66, 0.12);
       outline-offset: 3px;
@@ -94,6 +102,11 @@
     .project{
       background:linear-gradient(180deg, #fff, #fafafa); border:1px solid rgba(42,42,42,0.06);
       padding:0.6rem; display:flex; flex-direction:column; gap:0.6rem; align-items:stretch;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .project:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     .thumb{ width:100%; height:110px; background:#ddd; display:block; overflow:hidden; border-radius:4px; }
     .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -121,7 +134,7 @@
     .lang-btn:hover:not(.active){ background:rgba(42,42,42,0.08); }
 
     @media (max-width:900px){
-      .container{ grid-template-columns: 1fr; }
+      .container{ grid-template-columns: 1fr; gap: 1rem; }
       .avatar{ width:120px; height:120px; }
     }
   </style>
@@ -133,10 +146,9 @@
   <div class="container" role="main">
     <!-- LEFT: profil + sosyal -->
     <aside class="profile" aria-label="Profil">
-      <a class="avatar" href="#" aria-hidden="true">
-        <!-- Kullanıcı tarafından sağlanan avatar dosyasını yerleştirdim -->
+      <div class="avatar" aria-hidden="true">
         <img src="/assets/84ae33e58f1fd27c12ff10dd3ee0078a49d046b120a3387b93c3e911afe3d7aa.jpg" alt="Murat Can Sarıyıldız — fotoğrafı">
-      </a>
+      </div>
       <h1>Murat Can Sarıyıldız</h1>
       <div class="role" data-i18n="role">Game Design Student · Video Game Enthusiast</div>
 
@@ -147,20 +159,19 @@
         </a>
 
         <a class="btn" href="https://github.com/muratti216" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M12 .5C5.73.5.9 5.33.9 11.56c0 4.63 3 8.55 7.17 9.94.52.1.71-.23.71-.5v-1.8c-2.92.64-3.54-1.4-3.54-1.4-.48-1.25-1.17-1.58-1.17-1.58-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.6 2.48 1.14 3.08.87.09-.68.37-1.14.67-1.4-2.33-.27-4.78-1.17-4.78-5.2 0-1.15.41-2.09 1.09-2.83-.11-.27-.48-1.36.1-2.83 0 0 .89-.28 2.92 1.08a10.08 10.08 0 0 1 2.66-.36c.9 0 1.8.12 2.66.36 2.03-1.36 2.92-1.08 2.92-1.08.58 1.47.21 2.56.1 2.83.68.74 1.09 1.68 1.09 2.83 0 4.04-2.46 4.93-4.8 5.19.38.33.72.98.72 1.98v2.94c0 .28.19.61.72.5A11.52 11.52 0 0 0 23.1 11.56C23.1 5.33 18.27.5 12 .5z" fill="#111"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
         </a>
 
         <a class="btn" href="https://www.linkedin.com/in/muratcan-sarıyıldız-189404364" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M4.98 3.5a2.5 2.5 0 11-.001 5.001A2.5 2.5 0 014.98 3.5zM3 9h4v12H3zM9 9h3.8v1.64h.05c.53-1 1.83-2.05 3.77-2.05C21.76 8.59 23 10.9 23 14.58V21H18v-6.02c0-1.44-.03-3.3-2.01-3.3-2.01 0-2.32 1.57-2.32 3.2V21H9V9z" fill="#111"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.004 1.418-.103.249-.129.597-.129.945v5.442h-3.554s.048-8.814 0-9.737h3.554v1.379l-.022.033h.022v-.033c.429-.662 1.194-1.604 2.905-1.604 2.121 0 3.71 1.386 3.71 4.365v5.597zM5.337 8.855c-1.144 0-1.915-.762-1.915-1.715 0-.953.77-1.715 1.958-1.715 1.187 0 1.915.762 1.915 1.715 0 .953-.728 1.715-1.958 1.715zm1.616 11.597H3.721V9.567h3.232v10.885zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
           LinkedIn
         </a>
       </div>
 
       <footer class="site-footer">
-        <div class="small">© 2025 Murat Can Sarıyıldız</div>
+        <div class="small" id="copyright-year">© 2025 Murat Can Sarıyıldız</div>
         <div class="small">•</div>
-        <!-- Kullanıcının talebine göre: CV henüz eklenmedi şeklinde gösteriliyor -->
         <div class="small" data-i18n="footer_cv">CV dosyanız henüz eklenmedi</div>
       </footer>
     </aside>
@@ -185,34 +196,24 @@
         </div>
       </div>
 
-      <!-- <h2 style="margin:0 0 0.6rem 0; font-size:1.05rem; color:var(--ink);">Öne Çıkan Projeler</h2> -->
-
-      <!--
-        Projeler şu an boş bırakıldı, kullanıcı daha sonra ekleyecek.
-        Buraya eklemek için her proje için:
-        - küçük görsel: /assets/project-xxx.jpg
-        - başlık
-        - kısa meta (etiketler)
-        Örnek proje kartlarını yorum satırı olarak bıraktım; açıp düzenleyebilirsin.
-      -->
-
+      <!-- Projects section -->
       <div class="projects" aria-live="polite">
-        <!--
-        <article class="project" aria-label="Project FlowKare">
-          <a class="thumb" href="https://flowkareinxd.itch.io" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/project-flowkare.jpg" alt="FlowKare oyunundan ekran görüntüsü">
-          </a>
-          <div>
-            <p class="proj-title">FlowKare (itch.io)</p>
-            <p class="proj-meta">Hızlı prototip · Bulmaca / Fizik</p>
-          </div>
-        </article>
-        -->
-        <!-- Henüz proje yok — daha sonra ekle -->
+        <!-- Projects will be added here -->
       </div>
 
     </section>
   </div>
+
+  <script>
+    /* Dynamic copyright year */
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentYear = new Date().getFullYear();
+      const copyrightEl = document.getElementById('copyright-year');
+      if (copyrightEl) {
+        copyrightEl.textContent = '© ' + currentYear + ' Murat Can Sarıyıldız';
+      }
+    });
+  </script>
 
   <script>
     /* i18n — TR / EN dil seçimi */
@@ -222,8 +223,8 @@
           title:        'Murat Can Sarıyıldız',
           role:         'Dijital Oyun Tasarımı Öğrencisi · Dijital Oyun Tutkunu',
           bio:          'Merhaba ben Murat Can — Dijital oyun tasarımı üzerine eğitim alıyorum. Burada projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.',
-          footer_cv:    '',
-          cv_btn:       '',
+          footer_cv:    'CV dosyanız henüz eklenmedi',
+          cv_btn:       'CV (henüz eklenmedi)',
           cv_btn_title: 'CV henüz eklenmedi',
           email:        'E-posta: (henüz eklenmedi)',
           email_title:  'E-posta adresi henüz eklenmedi'
@@ -231,9 +232,9 @@
         en: {
           title:        'Murat Can Sarıyıldız',
           role:         'Digital Game Design Student · Video Game Enthusiast',
-          bio:          "Hey, I'm Murat Can — studying Digital game design. This is where I'll keep my  projects, resources, and contact info. I'll be adding projects soon.",
-          footer_cv:    '',
-          cv_btn:       '',
+          bio:          "Hey, I'm Murat Can — studying Digital game design. This is where I'll keep my projects, resources, and contact info. I'll be adding projects soon.",
+          footer_cv:    'CV not added yet',
+          cv_btn:       'CV (not added yet)',
           cv_btn_title: 'CV not added yet',
           email:        'Email: (not added yet)',
           email_title:  'Email address not added yet'
@@ -271,13 +272,13 @@
   </script>
 
   <script>
-    /* Görsel hatalarında placeholder gösterme (mevcut avatar dosyası yoksa bu devreye girer) */
+    /* Image fallback for broken images */
     (function(){
       const imgs = document.querySelectorAll('img');
       imgs.forEach(img => {
         img.onerror = () => {
           img.onerror = null;
-          img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600"><rect width="100%" height="100%" fill="%23ddd"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="28">Görsel yok</text></svg>';
+          img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"><rect width="100%" height="100%" fill="%23e0e0e0"/><text x="50%" y="50%" font-size="12" fill="%23999" text-anchor="middle" dominant-baseline="middle" font-family="Arial">Image not found</text></svg>';
         }
       });
     })();
