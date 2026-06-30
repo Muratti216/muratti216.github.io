@@ -29,12 +29,12 @@
       --muted: rgba(42,42,42,0.6);
     }
 
-    html,body{ height:100%; margin:0; font-family:'Roboto',sans-serif; overflow:hidden; }
+    html,body{ margin:0; font-family:'Roboto',sans-serif; }
     body{
       display:flex; align-items:center; justify-content:center;
       background: linear-gradient(180deg, var(--sky-glow) 0%, var(--sunset) 50%, var(--ocean) 100%);
-      overflow:hidden;
       padding:40px 20px;
+      min-height: 100vh;
     }
 
     .moving-gradient{ position:fixed; inset:0; z-index:0; pointer-events:none; mix-blend-mode:soft-light; opacity:0.6;
@@ -136,6 +136,7 @@
     @media (max-width:900px){
       .container{ grid-template-columns: 1fr; gap: 1rem; }
       .avatar{ width:120px; height:120px; }
+      body{ min-height: auto; }
     }
   </style>
 </head>
