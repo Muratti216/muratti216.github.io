@@ -27,14 +27,28 @@
       --ink: #2a2a2a;
       --accent-red: #c94242;
       --muted: rgba(42,42,42,0.6);
+      --light-bg: #ffffff;
+      --dark-bg: #1a1a1a;
+      --dark-panel: #2d2d2d;
+      --dark-text: #e0e0e0;
+    }
+
+    html.dark-mode{
+      --paper: rgba(45, 45, 45, 0.95);
+      --ink: #e0e0e0;
+      --muted: rgba(224,224,224,0.6);
     }
 
     html,body{ margin:0; font-family:'Roboto',sans-serif; }
     body{
-      display:flex; align-items:center; justify-content:center;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
       background: linear-gradient(180deg, var(--sky-glow) 0%, var(--sunset) 50%, var(--ocean) 100%);
       padding:40px 20px;
       min-height: 100vh;
+    }
+
+    html.dark-mode body{
+      background: linear-gradient(180deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
     }
 
     .moving-gradient{ position:fixed; inset:0; z-index:0; pointer-events:none; mix-blend-mode:soft-light; opacity:0.6;
@@ -45,17 +59,36 @@
     }
     @keyframes gradientShift{ 0%{ transform: translate3d(0,0,0) } 50%{ transform: translate3d(8%,-4%,0) } 100%{ transform: translate3d(-6%,6%,0) } }
 
+    .header-controls{
+      position:fixed; top:20px; right:20px; z-index:999; display:flex; gap:0.5rem;
+    }
+
+    .theme-btn{
+      padding:0.4rem 0.8rem; border:2px solid var(--ink); background:var(--paper); 
+      cursor:pointer; font-family:'Roboto',sans-serif; font-weight:700; font-size:0.75rem;
+      color:var(--ink); text-transform:uppercase; letter-spacing:1px;
+      transition:background .15s, color .15s;
+      border-radius:3px;
+    }
+    .theme-btn:hover{ background:rgba(42,42,42,0.08); }
+
+    .main-content{
+      position:relative; z-index:2; width:100%; max-width:1200px;
+    }
+
     .container{
       position:relative; z-index:2;
       width:min(1100px, 96%); max-width:1100px;
       display:grid; grid-template-columns: 360px 1fr; gap:2rem;
       align-items:start;
+      margin:0 auto 4rem;
     }
 
     .profile{
       background:var(--paper); border:2px solid var(--ink);
       padding:1.6rem; box-shadow:0 8px 24px rgba(0,0,0,0.16); backdrop-filter: blur(6px);
       display:flex; flex-direction:column; gap:1rem; align-items:center; text-align:center;
+      position:sticky; top:100px;
     }
 
     .avatar{
@@ -65,6 +98,7 @@
     .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
 
     h1{ font-family:'Bebas Neue',sans-serif; font-size:2.1rem; margin:0; letter-spacing:2px; color:var(--ink); text-transform:uppercase; }
+    h2{ font-family:'Bebas Neue',sans-serif; font-size:1.6rem; margin:2rem 0 1rem; letter-spacing:1px; color:var(--ink); text-transform:uppercase; }
     .role{ color:var(--muted); font-weight:500; margin-bottom:4px; }
 
     .socials{ display:flex; gap:0.5rem; margin-top:6px; flex-wrap:wrap; justify-content:center; }
@@ -73,6 +107,7 @@
       padding:0.55rem 0.8rem; border:2px solid var(--ink); text-decoration:none; color:var(--ink); font-weight:700;
       text-transform:uppercase; font-size:0.85rem; transition:all .18s ease;
       background:transparent;
+      cursor:pointer;
     }
     .btn svg{ width:18px; height:18px; display:block; }
 
@@ -92,26 +127,136 @@
     .panel{
       background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.88));
       border:2px solid var(--ink); padding:1.6rem; box-shadow:0 8px 24px rgba(0,0,0,0.12); backdrop-filter: blur(4px);
+      margin-bottom:2rem;
+    }
+
+    html.dark-mode .panel{
+      background:linear-gradient(180deg, rgba(45,45,45,0.92), rgba(45,45,45,0.88));
     }
 
     .intro{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
     .bio{ color:var(--ink); margin:0; font-size:0.98rem; }
     .cta-links{ display:flex; gap:0.6rem; flex-wrap:wrap; }
 
-    .projects{ display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:1rem; margin-top:1rem; }
+    /* Projects */
+    .projects-container{ display:flex; flex-direction:column; gap:2rem; }
+    .filter-bar{ display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .filter-btn{ 
+      padding:0.4rem 0.8rem; border:1px solid var(--ink); background:transparent;
+      cursor:pointer; font-size:0.8rem; color:var(--ink); transition:all .2s;
+      border-radius:3px;
+    }
+    .filter-btn.active{
+      background:var(--ink); color:var(--paper);
+    }
+    .filter-btn:hover{ transform:translateY(-2px); box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+
+    .projects{ display:grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap:1.5rem; margin-top:1rem; }
     .project{
       background:linear-gradient(180deg, #fff, #fafafa); border:1px solid rgba(42,42,42,0.06);
-      padding:0.6rem; display:flex; flex-direction:column; gap:0.6rem; align-items:stretch;
+      padding:1rem; display:flex; flex-direction:column; gap:0.8rem; align-items:stretch;
       transition: transform 200ms ease, box-shadow 200ms ease;
+      opacity:0; animation:fadeInUp 0.6s ease forwards;
     }
+    
+    @keyframes fadeInUp { 
+      from { opacity:0; transform:translateY(20px); } 
+      to { opacity:1; transform:translateY(0); } 
+    }
+
     .project:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
     }
-    .thumb{ width:100%; height:110px; background:#ddd; display:block; overflow:hidden; border-radius:4px; }
+
+    html.dark-mode .project{
+      background:linear-gradient(180deg, #333, #2a2a2a);
+    }
+
+    .thumb{ width:100%; height:130px; background:#ddd; display:block; overflow:hidden; border-radius:4px; }
     .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .proj-title{ font-weight:700; font-size:0.92rem; color:var(--ink); margin:0; }
-    .proj-meta{ font-size:0.82rem; color:var(--muted); }
+    .proj-title{ font-weight:700; font-size:1rem; color:var(--ink); margin:0; }
+    .proj-desc{ font-size:0.85rem; color:var(--muted); margin:0; }
+    .proj-tags{ display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.5rem; }
+    .tag{ 
+      font-size:0.7rem; padding:0.25rem 0.6rem; 
+      background:rgba(201,66,66,0.15); color:var(--accent-red); 
+      border-radius:12px; font-weight:600;
+    }
+    .proj-link{ 
+      display:inline-flex; gap:0.4rem; align-items:center;
+      font-size:0.85rem; color:var(--accent-red); text-decoration:none; font-weight:600;
+      transition:gap .2s;
+    }
+    .proj-link:hover{ gap:0.6rem; }
+
+    /* Skills */
+    .skills-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:1.5rem; margin-top:1rem; }
+    .skill-category{ background:rgba(42,42,42,0.05); padding:1rem; border-radius:6px; border-left:3px solid var(--accent-red); }
+    html.dark-mode .skill-category{ background:rgba(255,255,255,0.05); }
+    .skill-category h3{ margin:0 0 0.8rem; font-size:0.95rem; color:var(--ink); }
+    .skills-list{ display:flex; gap:0.5rem; flex-wrap:wrap; }
+    .skill-badge{ 
+      padding:0.4rem 0.8rem; font-size:0.8rem;
+      background:var(--accent-red); color:white; border-radius:4px; font-weight:600;
+    }
+
+    /* Timeline */
+    .timeline{ position:relative; padding-left:2rem; }
+    .timeline-item{ 
+      margin-bottom:2rem; padding-bottom:1.5rem; border-left:2px solid var(--accent-red);
+      position:relative;
+    }
+    .timeline-item::before{
+      content:''; position:absolute; left:-7px; top:0; width:12px; height:12px;
+      background:var(--accent-red); border-radius:50%;
+    }
+    .timeline-year{ font-weight:700; color:var(--accent-red); font-size:0.9rem; }
+    .timeline-title{ font-weight:600; margin:0.2rem 0; color:var(--ink); }
+    .timeline-desc{ font-size:0.85rem; color:var(--muted); margin:0.3rem 0; }
+
+    /* Testimonials */
+    .testimonials{ display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin-top:1rem; }
+    .testimonial{ 
+      background:linear-gradient(135deg, rgba(201,66,66,0.1), rgba(255,154,141,0.1));
+      padding:1.5rem; border-radius:8px; border-left:4px solid var(--accent-red);
+      position:relative;
+    }
+    html.dark-mode .testimonial{
+      background:linear-gradient(135deg, rgba(201,66,66,0.2), rgba(255,154,141,0.1));
+    }
+    .quote{ font-size:2rem; color:var(--accent-red); opacity:0.3; margin:0; }
+    .testimonial-text{ font-style:italic; color:var(--ink); margin:0.8rem 0; font-size:0.95rem; }
+    .testimonial-author{ font-weight:600; color:var(--accent-red); font-size:0.85rem; }
+    .testimonial-role{ font-size:0.75rem; color:var(--muted); }
+
+    /* Blog */
+    .blog-posts{ display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:1.5rem; margin-top:1rem; }
+    .blog-post{
+      background:var(--paper); border:1px solid rgba(42,42,42,0.1); 
+      padding:1.5rem; border-radius:6px; transition:all .3s;
+    }
+    .blog-post:hover{ transform:translateY(-4px); box-shadow:0 6px 16px rgba(0,0,0,0.1); }
+    .blog-date{ font-size:0.8rem; color:var(--accent-red); font-weight:600; }
+    .blog-title{ font-size:1.1rem; font-weight:700; margin:0.5rem 0; color:var(--ink); }
+    .blog-excerpt{ font-size:0.9rem; color:var(--muted); line-height:1.5; margin:0.8rem 0; }
+    .read-more{ color:var(--accent-red); text-decoration:none; font-weight:600; font-size:0.85rem; }
+
+    /* Video Gallery */
+    .videos-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin-top:1rem; }
+    .video-card{
+      position:relative; overflow:hidden; border-radius:6px; aspect-ratio:16/9;
+      background:#000; cursor:pointer;
+    }
+    .video-thumbnail{ width:100%; height:100%; object-fit:cover; }
+    .video-play{ 
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      background:rgba(0,0,0,0.3); transition:background .3s;
+    }
+    .video-card:hover .video-play{ background:rgba(0,0,0,0.5); }
+    .play-icon{ width:60px; height:60px; background:var(--accent-red); border-radius:50%;
+      display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem;
+    }
 
     footer.site-footer{ margin-top:6px; font-size:0.86rem; color:var(--muted); display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap; justify-content:center; }
 
@@ -121,6 +266,19 @@
     .btn[disabled], .btn.disabled {
       opacity:0.5; cursor:not-allowed; transform:none; pointer-events:none;
     }
+
+    /* Back to top button */
+    #backToTop{
+      position:fixed; bottom:30px; right:30px; z-index:998;
+      width:50px; height:50px; border-radius:50%;
+      background:var(--accent-red); color:white; border:none;
+      cursor:pointer; font-size:1.5rem; display:none;
+      align-items:center; justify-content:center;
+      box-shadow:0 4px 12px rgba(0,0,0,0.2);
+      transition:all .3s;
+    }
+    #backToTop:hover{ transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,0.3); }
+    #backToTop.show{ display:flex; }
 
     /* Language switcher */
     .lang-switcher{ display:flex; gap:0.35rem; justify-content:flex-end; margin-bottom:0.6rem; }
@@ -135,8 +293,23 @@
 
     @media (max-width:900px){
       .container{ grid-template-columns: 1fr; gap: 1rem; }
+      .profile{ position:static; }
       .avatar{ width:120px; height:120px; }
       body{ min-height: auto; }
+      .projects{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      .header-controls{ top:10px; right:10px; gap:0.3rem; }
+      .theme-btn, .lang-btn{ font-size:0.65rem; padding:0.3rem 0.6rem; }
+      #backToTop{ width:45px; height:45px; font-size:1.2rem; bottom:20px; right:20px; }
+    }
+
+    .scroll-fade{
+      opacity:0;
+      transform:translateY(20px);
+      transition:all 0.6s ease-out;
+    }
+    .scroll-fade.visible{
+      opacity:1;
+      transform:translateY(0);
     }
   </style>
 </head>
@@ -144,68 +317,154 @@
 
   <div class="moving-gradient" aria-hidden="true"></div>
 
-  <div class="container" role="main">
-    <!-- LEFT: profil + sosyal -->
-    <aside class="profile" aria-label="Profil">
-      <div class="avatar" aria-hidden="true">
-        <img src="/assets/84ae33e58f1fd27c12ff10dd3ee0078a49d046b120a3387b93c3e911afe3d7aa.jpg" alt="Murat Can Sarıyıldız — fotoğrafı">
-      </div>
-      <h1>Murat Can Sarıyıldız</h1>
-      <div class="role" data-i18n="role">Game Design Student · Video Game Enthusiast</div>
-
-      <div class="socials" aria-label="Sosyal bağlantılar">
-        <a class="btn" href="https://flowkareinxd.itch.io" target="_blank" rel="noopener noreferrer" aria-label="itch.io">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M2 12c0 5.523 4.477 10 10 10s10-4.477 10-10S17.523 2 12 2 2 6.477 2 12z" fill="#111"/></svg>
-          itch.io
-        </a>
-
-        <a class="btn" href="https://github.com/muratti216" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          GitHub
-        </a>
-
-        <a class="btn" href="https://www.linkedin.com/in/muratcan-sarıyıldız-189404364" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.004 1.418-.103.249-.129.597-.129.945v5.442h-3.554s.048-8.814 0-9.737h3.554v1.379l-.022.033h.022v-.033c.429-.662 1.194-1.604 2.905-1.604 2.121 0 3.71 1.386 3.71 4.365v5.597zM5.337 8.855c-1.144 0-1.915-.762-1.915-1.715 0-.953.77-1.715 1.958-1.715 1.187 0 1.915.762 1.915 1.715 0 .953-.728 1.715-1.958 1.715zm1.616 11.597H3.721V9.567h3.232v10.885zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
-          LinkedIn
-        </a>
-      </div>
-
-      <footer class="site-footer">
-        <div class="small" id="copyright-year">© 2025 Murat Can Sarıyıldız</div>
-        <div class="small">•</div>
-        <div class="small" data-i18n="footer_cv">CV dosyanız henüz eklenmedi</div>
-      </footer>
-    </aside>
-
-    <!-- RIGHT: panel with kısa bio + projeler -->
-    <section class="panel" aria-label="Projeler ve bağlantılar">
-      <div class="lang-switcher" aria-label="Dil seçici / Language switcher">
-        <button class="lang-btn" id="btn-tr" lang="tr" onclick="setLang('tr')">TR</button>
-        <button class="lang-btn" id="btn-en" lang="en" onclick="setLang('en')">EN</button>
-      </div>
-      <div class="intro">
-        <p class="bio" data-i18n="bio">Merhaba ben Murat Can — oyun tasarımı üzerine eğitim alıyorum. Burada küçük projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.</p>
-        <div class="cta-links">
-          <!-- CV butonu pasif; kullanıcı CV eklemediği için disabled -->
-          <a class="btn disabled" href="#" aria-disabled="true" data-i18n-title="cv_btn_title" title="CV henüz eklenmedi"> 
-            <svg viewBox="0 0 24 24" class="icon-left" aria-hidden="true"><path d="M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#111"/></svg>
-            <span data-i18n="cv_btn">CV (henüz eklenmedi)</span>
-          </a>
-
-          <!-- E-posta şu an boş bırakıldı; daha sonra eklenecek -->
-          <span class="small" data-i18n="email" data-i18n-title="email_title" title="E-posta adresi henüz eklenmedi">E-posta: (henüz eklenmedi)</span>
-        </div>
-      </div>
-
-      <!-- Projects section -->
-      <div class="projects" aria-live="polite">
-        <!-- Projects will be added here -->
-      </div>
-
-    </section>
+  <div class="header-controls">
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+    <div class="lang-switcher">
+      <button class="lang-btn" id="btn-tr" lang="tr" onclick="setLang('tr')">TR</button>
+      <button class="lang-btn" id="btn-en" lang="en" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 
+  <div class="main-content">
+    <div class="container" role="main">
+      <!-- LEFT: profil + sosyal -->
+      <aside class="profile" aria-label="Profil">
+        <div class="avatar" aria-hidden="true">
+          <img src="/assets/84ae33e58f1fd27c12ff10dd3ee0078a49d046b120a3387b93c3e911afe3d7aa.jpg" alt="Murat Can Sarıyıldız — fotoğrafı">
+        </div>
+        <h1>Murat Can Sarıyıldız</h1>
+        <div class="role" data-i18n="role">Game Design Student · Video Game Enthusiast</div>
+
+        <div class="socials" aria-label="Sosyal bağlantılar">
+          <a class="btn" href="https://flowkareinxd.itch.io" target="_blank" rel="noopener noreferrer" aria-label="itch.io">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M2 12c0 5.523 4.477 10 10 10s10-4.477 10-10S17.523 2 12 2 2 6.477 2 12z" fill="#111"/></svg>
+            itch.io
+          </a>
+
+          <a class="btn" href="https://github.com/muratti216" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+
+          <a class="btn" href="https://www.linkedin.com/in/muratcan-sarıyıldız-189404364" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.004 1.418-.103.249-.129.597-.129.945v5.442h-3.554s.048-8.814 0-9.737h3.554v1.379l-.022.033h.022v-.033c.429-.662 1.194-1.604 2.905-1.604 2.121 0 3.71 1.386 3.71 4.365v5.597zM5.337 8.855c-1.144 0-1.915-.762-1.915-1.715 0-.953.77-1.715 1.958-1.715 1.187 0 1.915.762 1.915 1.715 0 .953-.728 1.715-1.958 1.715zm1.616 11.597H3.721V9.567h3.232v10.885zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+
+        <footer class="site-footer">
+          <div class="small" id="copyright-year">© 2025 Murat Can Sarıyıldız</div>
+          <div class="small">•</div>
+          <div class="small" data-i18n="footer_cv">CV dosyanız henüz eklenmedi</div>
+        </footer>
+      </aside>
+
+      <!-- RIGHT: panel with content sections -->
+      <section class="panel" aria-label="Projeler ve bağlantılar">
+        <div class="intro">
+          <p class="bio" data-i18n="bio">Merhaba ben Murat Can — oyun tasarımı üzerine eğitim alıyorum. Burada projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Main sections -->
+    <div style="width:min(1100px, 96%); max-width:1100px; margin:0 auto;">
+
+      <!-- Projects -->
+      <section class="panel scroll-fade">
+        <h2 data-i18n="projects_title">Öne Çıkan Projeler</h2>
+        <div class="filter-bar" id="filterBar">
+          <button class="filter-btn active" data-filter="all" data-i18n="filter_all">Tümü</button>
+          <button class="filter-btn" data-filter="puzzle" data-i18n="filter_puzzle">Bulmaca</button>
+          <button class="filter-btn" data-filter="action" data-i18n="filter_action">Aksiyon</button>
+          <button class="filter-btn" data-filter="jam" data-i18n="filter_jam">Game Jam</button>
+        </div>
+        <div class="projects" id="projectsList" aria-live="polite">
+          <!-- Projects will be populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="panel scroll-fade">
+        <h2 data-i18n="skills_title">Yetenekler & Araçlar</h2>
+        <div class="skills-grid" id="skillsGrid">
+          <!-- Skills will be populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Timeline -->
+      <section class="panel scroll-fade">
+        <h2 data-i18n="timeline_title">Deneyim & Eğitim</h2>
+        <div class="timeline" id="timelineList">
+          <!-- Timeline items will be populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="panel scroll-fade">
+        <h2 data-i18n="testimonials_title">Referanslar</h2>
+        <div class="testimonials" id="testimonialsList">
+          <!-- Testimonials will be populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Blog -->
+      <section class="panel scroll-fade">
+        <h2 data-i18n="blog_title">Blog & Yazılar</h2>
+        <div class="blog-posts" id="blogList">
+          <!-- Blog posts will be populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Video Gallery -->
+      <section class="panel scroll-fade">
+        <h2 data-i18n="videos_title">Oyun Videoları</h2>
+        <div class="videos-grid" id="videosList">
+          <!-- Videos will be populated by JavaScript -->
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Back to top button -->
+  <button id="backToTop" aria-label="Sayfanın üstüne git">↑</button>
+
   <script>
+    /* Theme Toggle */
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+    
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if(savedTheme === 'dark') htmlElement.classList.add('dark-mode');
+    
+    themeToggle.addEventListener('click', () => {
+      htmlElement.classList.toggle('dark-mode');
+      const newTheme = htmlElement.classList.contains('dark-mode') ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    /* Scroll animations */
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
+
+    /* Back to top */
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTopBtn.classList.toggle('show', window.scrollY > 300);
+    });
+    backToTopBtn.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+
     /* Dynamic copyright year */
     document.addEventListener('DOMContentLoaded', function() {
       const currentYear = new Date().getFullYear();
@@ -221,28 +480,45 @@
     (function(){
       var dict = {
         tr: {
-          title:        'Murat Can Sarıyıldız',
-          role:         'Dijital Oyun Tasarımı Öğrencisi · Dijital Oyun Tutkunu',
-          bio:          'Merhaba ben Murat Can — Dijital oyun tasarımı üzerine eğitim alıyorum. Burada projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.',
-          footer_cv:    'CV dosyanız henüz eklenmedi',
-          cv_btn:       'CV (henüz eklenmedi)',
-          cv_btn_title: 'CV henüz eklenmedi',
-          email:        'E-posta: (henüz eklenmedi)',
-          email_title:  'E-posta adresi henüz eklenmedi'
+          title: 'Murat Can Sarıyıldız',
+          role: 'Dijital Oyun Tasarımı Öğrencisi · Dijital Oyun Tutkunu',
+          bio: 'Merhaba ben Murat Can — Dijital oyun tasarımı üzerine eğitim alıyorum. Burada projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.',
+          footer_cv: 'CV dosyanız henüz eklenmedi',
+          cv_btn: 'CV (henüz eklenmedi)',
+          projects_title: 'Öne Çıkan Projeler',
+          filter_all: 'Tümü',
+          filter_puzzle: 'Bulmaca',
+          filter_action: 'Aksiyon',
+          filter_jam: 'Game Jam',
+          skills_title: 'Yetenekler & Araçlar',
+          timeline_title: 'Deneyim & Eğitim',
+          testimonials_title: 'Referanslar',
+          blog_title: 'Blog & Yazılar',
+          videos_title: 'Oyun Videoları',
         },
         en: {
-          title:        'Murat Can Sarıyıldız',
-          role:         'Digital Game Design Student · Digital Game Enthusiast',
-          bio:          "Hey, I'm Murat Can — studying Digital game design. This is where I'll keep my projects, resources, and contact info. I'll be adding projects soon.",
-          footer_cv:    'CV not added yet',
-          cv_btn:       'CV (not added yet)',
-          cv_btn_title: 'CV not added yet',
-          email:        'Email: (not added yet)',
-          email_title:  'Email address not added yet'
+          title: 'Murat Can Sarıyıldız',
+          role: 'Digital Game Design Student · Video Game Enthusiast',
+          bio: "Hey, I'm Murat Can — studying Digital game design. This is where I'll keep my projects, resources, and contact info. I'll be adding projects soon.",
+          footer_cv: 'CV not added yet',
+          cv_btn: 'CV (not added yet)',
+          projects_title: 'Featured Projects',
+          filter_all: 'All',
+          filter_puzzle: 'Puzzle',
+          filter_action: 'Action',
+          filter_jam: 'Game Jam',
+          skills_title: 'Skills & Tools',
+          timeline_title: 'Experience & Education',
+          testimonials_title: 'Testimonials',
+          blog_title: 'Blog & Articles',
+          videos_title: 'Game Videos',
         }
       };
 
+      var currentLang = 'tr';
+
       function applyLang(lang) {
+        currentLang = lang;
         var t = dict[lang] || dict['tr'];
         document.title = t.title;
         document.documentElement.lang = lang;
@@ -250,17 +526,15 @@
           var key = el.getAttribute('data-i18n');
           if (t[key] !== undefined) el.textContent = t[key];
         });
-        document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
-          var key = el.getAttribute('data-i18n-title');
-          if (t[key] !== undefined) el.title = t[key];
-        });
         document.querySelectorAll('.lang-btn').forEach(function(btn) {
           btn.classList.toggle('active', btn.id === 'btn-' + lang);
         });
         try { localStorage.setItem('lang', lang); } catch(e) {}
+        populateContent(lang);
       }
 
       window.setLang = function(lang) { applyLang(lang); };
+      window.getCurrentLang = function() { return currentLang; };
 
       var lang;
       try { lang = localStorage.getItem('lang'); } catch(e) {}
@@ -270,6 +544,171 @@
       if (lang !== 'tr' && lang !== 'en') lang = 'tr';
       applyLang(lang);
     })();
+  </script>
+
+  <script>
+    /* Content Population */
+    const projectsData = {
+      tr: [
+        { id: 1, title: 'FlowKare', desc: 'Akıl ve hız oyunu', tags: ['puzzle', 'jam'], link: 'https://flowkareinxd.itch.io', img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="130"%3E%3Crect fill="%23FF9A8D" width="100%25" height="100%25"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle" font-family="Arial"%3EFlowKare%3C/text%3E%3C/svg%3E' },
+        { id: 2, title: 'Oyun Projesi 2', desc: 'Arcade aksiyon oyunu', tags: ['action'], link: '#', img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="130"%3E%3Crect fill="%234B6CB7" width="100%25" height="100%25"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle" font-family="Arial"%3EProje 2%3C/text%3E%3C/svg%3E' },
+      ],
+      en: [
+        { id: 1, title: 'FlowKare', desc: 'Mind and speed game', tags: ['puzzle', 'jam'], link: 'https://flowkareinxd.itch.io', img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="130"%3E%3Crect fill="%23FF9A8D" width="100%25" height="100%25"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle" font-family="Arial"%3EFlowKare%3C/text%3E%3C/svg%3E' },
+        { id: 2, title: 'Game Project 2', desc: 'Arcade action game', tags: ['action'], link: '#', img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="130"%3E%3Crect fill="%234B6CB7" width="100%25" height="100%25"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle" font-family="Arial"%3EProject 2%3C/text%3E%3C/svg%3E' },
+      ]
+    };
+
+    const skillsData = {
+      tr: {
+        engines: ['Unity', 'Godot', 'Unreal Engine'],
+        languages: ['C#', 'Python', 'JavaScript', 'GDScript'],
+        tools: ['Blender', 'Figma', 'Aseprite', 'Git'],
+      },
+      en: {
+        engines: ['Unity', 'Godot', 'Unreal Engine'],
+        languages: ['C#', 'Python', 'JavaScript', 'GDScript'],
+        tools: ['Blender', 'Figma', 'Aseprite', 'Git'],
+      }
+    };
+
+    const timelineData = {
+      tr: [
+        { year: '2024', title: 'Dijital Oyun Tasarımı Bölümü', desc: 'Üniversite' },
+        { year: '2023', title: 'Global Game Jam 2023', desc: 'Katılımcı' },
+        { year: '2022', title: 'Oyun Geliştirmeye Başlama', desc: 'Unity ile ilk projeler' },
+      ],
+      en: [
+        { year: '2024', title: 'Digital Game Design Program', desc: 'University' },
+        { year: '2023', title: 'Global Game Jam 2023', desc: 'Participant' },
+        { year: '2022', title: 'Started Game Development', desc: 'First projects with Unity' },
+      ]
+    };
+
+    const testimonialData = {
+      tr: [
+        { text: 'Harika tasarım ve yaratıcılık!', author: 'Ahmet Y.', role: 'Oyun Geliştiricisi' },
+        { text: 'Proje takımında çalışması çok keyifliydi.', author: 'Ayşe T.', role: 'Öğretmen' },
+      ],
+      en: [
+        { text: 'Great design and creativity!', author: 'Ahmed Y.', role: 'Game Developer' },
+        { text: 'It was a pleasure working on a project with him.', author: 'Ayse T.', role: 'Teacher' },
+      ]
+    };
+
+    const blogData = {
+      tr: [
+        { title: 'Oyun Tasarımında Kullanıcı Deneyimi', date: '30 Haziran 2026', excerpt: 'UI/UX tasarımının oyun geliştirimindeki öneminden bahsediyorum...' },
+        { title: 'Unity ile Fizik Motoru Geliştirme', date: '28 Haziran 2026', excerpt: 'Unity fizik sistemini nasıl optimize edeceğini öğren...' },
+      ],
+      en: [
+        { title: 'User Experience in Game Design', date: 'June 30, 2026', excerpt: 'Discussing the importance of UI/UX design in game development...' },
+        { title: 'Developing Physics Engine with Unity', date: 'June 28, 2026', excerpt: 'Learn how to optimize Unitys physics system...' },
+      ]
+    };
+
+    function populateContent(lang) {
+      // Projects
+      const projectsList = document.getElementById('projectsList');
+      projectsList.innerHTML = projectsData[lang].map(p => `
+        <div class="project" data-tag="${p.tags.join(' ')}" style="animation-delay: ${projectsData[lang].indexOf(p) * 0.1}s">
+          <div class="thumb" style="background-image: url('${p.img}'); background-size: cover;"></div>
+          <h3 class="proj-title">${p.title}</h3>
+          <p class="proj-desc">${p.desc}</p>
+          <div class="proj-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          <a href="${p.link}" target="_blank" class="proj-link">→ ${lang === 'tr' ? 'Bak' : 'View'}</a>
+        </div>
+      `).join('');
+
+      // Filter functionality
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.dataset.filter;
+          document.querySelectorAll('.project').forEach(p => {
+            if(filter === 'all' || p.dataset.tag.includes(filter)) {
+              p.style.display = 'flex';
+            } else {
+              p.style.display = 'none';
+            }
+          });
+        };
+      });
+
+      // Skills
+      const skillsGrid = document.getElementById('skillsGrid');
+      const skillCategories = lang === 'tr' 
+        ? {engines: 'Oyun Motorları', languages: 'Programlama Dilleri', tools: 'Araçlar'}
+        : {engines: 'Game Engines', languages: 'Programming Languages', tools: 'Tools'};
+      
+      skillsGrid.innerHTML = Object.entries(skillsData[lang]).map(([cat, items]) => `
+        <div class="skill-category scroll-fade">
+          <h3>${skillCategories[cat]}</h3>
+          <div class="skills-list">${items.map(s => `<span class="skill-badge">${s}</span>`).join('')}</div>
+        </div>
+      `).join('');
+
+      // Timeline
+      const timelineList = document.getElementById('timelineList');
+      timelineList.innerHTML = timelineData[lang].map((item, i) => `
+        <div class="timeline-item scroll-fade" style="animation-delay: ${i * 0.1}s">
+          <div class="timeline-year">${item.year}</div>
+          <div class="timeline-title">${item.title}</div>
+          <div class="timeline-desc">${item.desc}</div>
+        </div>
+      `).join('');
+
+      // Testimonials
+      const testimonialsList = document.getElementById('testimonialsList');
+      testimonialsList.innerHTML = testimonialData[lang].map((t, i) => `
+        <div class="testimonial scroll-fade" style="animation-delay: ${i * 0.1}s">
+          <p class="quote">"</p>
+          <p class="testimonial-text">${t.text}</p>
+          <p class="testimonial-author">${t.author}</p>
+          <p class="testimonial-role">${t.role}</p>
+        </div>
+      `).join('');
+
+      // Blog
+      const blogList = document.getElementById('blogList');
+      blogList.innerHTML = blogData[lang].map((b, i) => `
+        <article class="blog-post scroll-fade" style="animation-delay: ${i * 0.1}s">
+          <p class="blog-date">${b.date}</p>
+          <h3 class="blog-title">${b.title}</h3>
+          <p class="blog-excerpt">${b.excerpt}</p>
+          <a href="#" class="read-more">${lang === 'tr' ? 'Devamını Oku' : 'Read More'} →</a>
+        </article>
+      `).join('');
+
+      // Videos
+      const videosList = document.getElementById('videosList');
+      videosList.innerHTML = `
+        <div class="video-card">
+          <div style="width:100%; height:100%; background:linear-gradient(135deg, #FF9A8D, #4B6CB7); display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem;">📹</div>
+          <div class="video-play"><div class="play-icon">▶</div></div>
+        </div>
+        <div class="video-card">
+          <div style="width:100%; height:100%; background:linear-gradient(135deg, #FDE4A3, #FF9A8D); display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem;">🎮</div>
+          <div class="video-play"><div class="play-icon">▶</div></div>
+        </div>
+      `;
+
+      // Re-observe new elements
+      document.querySelectorAll('.scroll-fade:not(.visible)').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
   </script>
 
   <script>
