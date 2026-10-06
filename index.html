@@ -109,7 +109,7 @@
       background:transparent;
       cursor:pointer;
     }
-    .btn svg{ width:18px; height:18px; display:block; }
+    .btn svg, .btn .social-icon{ width:18px; height:18px; display:block; object-fit:contain; }
 
     .btn:hover {
       background: rgba(42, 42, 42, 0.06);
@@ -350,7 +350,7 @@
 
         <div class="socials" aria-label="Sosyal bağlantılar">
           <a class="btn" href="https://flowkareinxd.itch.io" target="_blank" rel="noopener noreferrer" aria-label="itch.io">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M2 12c0 5.523 4.477 10 10 10s10-4.477 10-10S17.523 2 12 2 2 6.477 2 12z" fill="#111"/></svg>
+            <img class="social-icon" src="/assets/itchio-logo-textless-black.png" alt="" aria-hidden="true">
             itch.io
           </a>
 
@@ -632,6 +632,19 @@
         }
       });
     })();
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let lang = 'tr';
+      try {
+        lang = localStorage.getItem('lang') || 'tr';
+      } catch(e) {}
+      if (lang !== 'tr' && lang !== 'en') lang = 'tr';
+      if (typeof window.setLang === 'function') window.setLang(lang);
+
+      const activeFilterBtn = document.querySelector('.filter-btn.active');
+      if (activeFilterBtn) activeFilterBtn.click();
+    });
   </script>
 </body>
 </html>
