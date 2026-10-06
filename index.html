@@ -173,8 +173,21 @@
       background:linear-gradient(180deg, #333, #2a2a2a);
     }
 
-    .thumb{ width:100%; height:130px; background:#ddd; display:block; overflow:hidden; border-radius:4px; }
-    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .project-media{ width:100%; background:#ddd; display:block; overflow:hidden; border-radius:4px; }
+    .project-media--image{ height:130px; }
+    .project-media--image img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .project-media--embed{
+      width:100%;
+      aspect-ratio:16/9;
+      max-width:100%;
+      overflow:hidden;
+    }
+    .project-media--embed iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+    }
     .proj-title{ font-weight:700; font-size:1rem; color:var(--ink); margin:0; }
     .proj-desc{ font-size:0.85rem; color:var(--muted); margin:0; }
     .proj-tags{ display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.5rem; }
@@ -375,9 +388,7 @@
         <h2 data-i18n="projects_title">Öne Çıkan Projeler</h2>
         <div class="filter-bar" id="filterBar">
           <button class="filter-btn active" data-filter="all" data-i18n="filter_all">Tümü</button>
-          <button class="filter-btn" data-filter="puzzle" data-i18n="filter_puzzle">Bulmaca</button>
-          <button class="filter-btn" data-filter="action" data-i18n="filter_action">Aksiyon</button>
-          <button class="filter-btn" data-filter="jam" data-i18n="filter_jam">Game Jam</button>
+          <button class="filter-btn" data-filter="level-design" data-i18n="filter_level_design">Level Design</button>
         </div>
         <div class="projects" id="projectsList" aria-live="polite">
           <!-- Projects will be populated by JavaScript -->
@@ -389,38 +400,6 @@
         <h2 data-i18n="skills_title">Yetenekler & Araçlar</h2>
         <div class="skills-grid" id="skillsGrid">
           <!-- Skills will be populated by JavaScript -->
-        </div>
-      </section>
-
-      <!-- Timeline -->
-      <section class="panel scroll-fade">
-        <h2 data-i18n="timeline_title">Deneyim & Eğitim</h2>
-        <div class="timeline" id="timelineList">
-          <!-- Timeline items will be populated by JavaScript -->
-        </div>
-      </section>
-
-      <!-- Testimonials -->
-      <section class="panel scroll-fade">
-        <h2 data-i18n="testimonials_title">Referanslar</h2>
-        <div class="testimonials" id="testimonialsList">
-          <!-- Testimonials will be populated by JavaScript -->
-        </div>
-      </section>
-
-      <!-- Blog -->
-      <section class="panel scroll-fade">
-        <h2 data-i18n="blog_title">Blog & Yazılar</h2>
-        <div class="blog-posts" id="blogList">
-          <!-- Blog posts will be populated by JavaScript -->
-        </div>
-      </section>
-
-      <!-- Video Gallery -->
-      <section class="panel scroll-fade">
-        <h2 data-i18n="videos_title">Oyun Videoları</h2>
-        <div class="videos-grid" id="videosList">
-          <!-- Videos will be populated by JavaScript -->
         </div>
       </section>
 
@@ -487,14 +466,8 @@
           cv_btn: 'CV (henüz eklenmedi)',
           projects_title: 'Öne Çıkan Projeler',
           filter_all: 'Tümü',
-          filter_puzzle: 'Bulmaca',
-          filter_action: 'Aksiyon',
-          filter_jam: 'Game Jam',
+          filter_level_design: 'Level Design',
           skills_title: 'Yetenekler & Araçlar',
-          timeline_title: 'Deneyim & Eğitim',
-          testimonials_title: 'Referanslar',
-          blog_title: 'Blog & Yazılar',
-          videos_title: 'Oyun Videoları',
         },
         en: {
           title: 'Murat Can Sarıyıldız',
@@ -504,14 +477,8 @@
           cv_btn: 'CV (not added yet)',
           projects_title: 'Featured Projects',
           filter_all: 'All',
-          filter_puzzle: 'Puzzle',
-          filter_action: 'Action',
-          filter_jam: 'Game Jam',
+          filter_level_design: 'Level Design',
           skills_title: 'Skills & Tools',
-          timeline_title: 'Experience & Education',
-          testimonials_title: 'Testimonials',
-          blog_title: 'Blog & Articles',
-          videos_title: 'Game Videos',
         }
       };
 
@@ -550,12 +517,40 @@
     /* Content Population */
     const projectsData = {
       tr: [
-        { id: 1, title: 'FlowKare', desc: 'Akıl ve hız oyunu', tags: ['puzzle', 'jam'], link: 'https://flowkareinxd.itch.io', img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="130"%3E%3Crect fill="%23FF9A8D" width="100%25" height="100%25"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle" font-family="Arial"%3EFlowKare%3C/text%3E%3C/svg%3E' },
-        { id: 2, title: 'Oyun Projesi 2', desc: 'Arcade aksiyon oyunu', tags: ['action'], link: '#', img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="130"%3E%3Crect fill="%234B6CB7" width="100%25" height="100%25"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle" font-family="Arial"%3EProje 2%3C/text%3E%3C/svg%3E' },
+        {
+          id: 1,
+          title: 'Wisteria REV',
+          desc: 'Pinokyo masalından esinlenen Souls-like projesi için atmosfer inşası, çevresel hikâye anlatımı odaklı gezilebilir mekân tasarımı.',
+          tags: ['level-design'],
+          link: 'https://www.youtube.com/embed/YRGmeb7oqH4',
+          media: { type: 'embed', src: 'https://www.youtube.com/embed/YRGmeb7oqH4' }
+        },
+        {
+          id: 2,
+          title: 'The Sealed Heir',
+          desc: 'Geçmiş ve şimdiki zaman arasında geçiş mekaniği barındıran 2D macera-platform oyunu. Oyuncu temposunu belirleyen level tasarımları.',
+          tags: ['level-design'],
+          link: 'https://sarozs.itch.io/the-sealed-heir',
+          media: { type: 'image', src: 'https://github.com/user-attachments/assets/64bd5610-be8e-4ce2-8e05-8a15cbe5f0af' }
+        },
       ],
       en: [
-        { id: 1, title: 'FlowKare', desc: 'Mind and speed game', tags: ['puzzle', 'jam'], link: 'https://flowkareinxd.itch.io', img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="130"%3E%3Crect fill="%23FF9A8D" width="100%25" height="100%25"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle" font-family="Arial"%3EFlowKare%3C/text%3E%3C/svg%3E' },
-        { id: 2, title: 'Game Project 2', desc: 'Arcade action game', tags: ['action'], link: '#', img: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="130"%3E%3Crect fill="%234B6CB7" width="100%25" height="100%25"/%3E%3Ctext x="50%25" y="50%25" font-size="16" fill="white" text-anchor="middle" dominant-baseline="middle" font-family="Arial"%3EProject 2%3C/text%3E%3C/svg%3E' },
+        {
+          id: 1,
+          title: 'Wisteria REV',
+          desc: 'A Souls-like inspired by Pinocchio focused on atmosphere building and explorable environments with environmental storytelling.',
+          tags: ['level-design'],
+          link: 'https://www.youtube.com/embed/YRGmeb7oqH4',
+          media: { type: 'embed', src: 'https://www.youtube.com/embed/YRGmeb7oqH4' }
+        },
+        {
+          id: 2,
+          title: 'The Sealed Heir',
+          desc: 'A 2D adventure-platformer with past/present time-shift mechanics and level design that shapes player pacing.',
+          tags: ['level-design'],
+          link: 'https://sarozs.itch.io/the-sealed-heir',
+          media: { type: 'image', src: 'https://github.com/user-attachments/assets/64bd5610-be8e-4ce2-8e05-8a15cbe5f0af' }
+        },
       ]
     };
 
@@ -572,47 +567,17 @@
       }
     };
 
-    const timelineData = {
-      tr: [
-        { year: '2024', title: 'Dijital Oyun Tasarımı Bölümü', desc: 'Üniversite' },
-        { year: '2023', title: 'Global Game Jam 2023', desc: 'Katılımcı' },
-        { year: '2022', title: 'Oyun Geliştirmeye Başlama', desc: 'Unity ile ilk projeler' },
-      ],
-      en: [
-        { year: '2024', title: 'Digital Game Design Program', desc: 'University' },
-        { year: '2023', title: 'Global Game Jam 2023', desc: 'Participant' },
-        { year: '2022', title: 'Started Game Development', desc: 'First projects with Unity' },
-      ]
-    };
-
-    const testimonialData = {
-      tr: [
-        { text: 'Harika tasarım ve yaratıcılık!', author: 'Ahmet Y.', role: 'Oyun Geliştiricisi' },
-        { text: 'Proje takımında çalışması çok keyifliydi.', author: 'Ayşe T.', role: 'Öğretmen' },
-      ],
-      en: [
-        { text: 'Great design and creativity!', author: 'Ahmed Y.', role: 'Game Developer' },
-        { text: 'It was a pleasure working on a project with him.', author: 'Ayse T.', role: 'Teacher' },
-      ]
-    };
-
-    const blogData = {
-      tr: [
-        { title: 'Oyun Tasarımında Kullanıcı Deneyimi', date: '30 Haziran 2026', excerpt: 'UI/UX tasarımının oyun geliştirimindeki öneminden bahsediyorum...' },
-        { title: 'Unity ile Fizik Motoru Geliştirme', date: '28 Haziran 2026', excerpt: 'Unity fizik sistemini nasıl optimize edeceğini öğren...' },
-      ],
-      en: [
-        { title: 'User Experience in Game Design', date: 'June 30, 2026', excerpt: 'Discussing the importance of UI/UX design in game development...' },
-        { title: 'Developing Physics Engine with Unity', date: 'June 28, 2026', excerpt: 'Learn how to optimize Unitys physics system...' },
-      ]
-    };
-
     function populateContent(lang) {
       // Projects
       const projectsList = document.getElementById('projectsList');
       projectsList.innerHTML = projectsData[lang].map(p => `
         <div class="project" data-tag="${p.tags.join(' ')}" style="animation-delay: ${projectsData[lang].indexOf(p) * 0.1}s">
-          <div class="thumb" style="background-image: url('${p.img}'); background-size: cover;"></div>
+          ${p.media.type === 'embed'
+            ? `<div class="project-media project-media--embed">
+                <iframe src="${p.media.src}" title="${p.title}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+               </div>`
+            : `<div class="project-media project-media--image"><img src="${p.media.src}" alt="${p.title}" loading="lazy"></div>`
+          }
           <h3 class="proj-title">${p.title}</h3>
           <p class="proj-desc">${p.desc}</p>
           <div class="proj-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
@@ -649,66 +614,11 @@
         </div>
       `).join('');
 
-      // Timeline
-      const timelineList = document.getElementById('timelineList');
-      timelineList.innerHTML = timelineData[lang].map((item, i) => `
-        <div class="timeline-item scroll-fade" style="animation-delay: ${i * 0.1}s">
-          <div class="timeline-year">${item.year}</div>
-          <div class="timeline-title">${item.title}</div>
-          <div class="timeline-desc">${item.desc}</div>
-        </div>
-      `).join('');
-
-      // Testimonials
-      const testimonialsList = document.getElementById('testimonialsList');
-      testimonialsList.innerHTML = testimonialData[lang].map((t, i) => `
-        <div class="testimonial scroll-fade" style="animation-delay: ${i * 0.1}s">
-          <p class="quote">"</p>
-          <p class="testimonial-text">${t.text}</p>
-          <p class="testimonial-author">${t.author}</p>
-          <p class="testimonial-role">${t.role}</p>
-        </div>
-      `).join('');
-
-      // Blog
-      const blogList = document.getElementById('blogList');
-      blogList.innerHTML = blogData[lang].map((b, i) => `
-        <article class="blog-post scroll-fade" style="animation-delay: ${i * 0.1}s">
-          <p class="blog-date">${b.date}</p>
-          <h3 class="blog-title">${b.title}</h3>
-          <p class="blog-excerpt">${b.excerpt}</p>
-          <a href="#" class="read-more">${lang === 'tr' ? 'Devamını Oku' : 'Read More'} →</a>
-        </article>
-      `).join('');
-
-      // Videos
-      const videosList = document.getElementById('videosList');
-      videosList.innerHTML = `
-        <div class="video-card">
-          <div style="width:100%; height:100%; background:linear-gradient(135deg, #FF9A8D, #4B6CB7); display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem;">📹</div>
-          <div class="video-play"><div class="play-icon">▶</div></div>
-        </div>
-        <div class="video-card">
-          <div style="width:100%; height:100%; background:linear-gradient(135deg, #FDE4A3, #FF9A8D); display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem;">🎮</div>
-          <div class="video-play"><div class="play-icon">▶</div></div>
-        </div>
-      `;
-
       // Re-observe new elements
       document.querySelectorAll('.scroll-fade:not(.visible)').forEach(el => {
         observer.observe(el);
       });
     }
-
-    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
   </script>
 
   <script>
