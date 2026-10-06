@@ -110,6 +110,8 @@
       cursor:pointer;
     }
     .btn svg, .btn .social-icon{ width:18px; height:18px; display:block; object-fit:contain; }
+    .social-icon--itch{ transition:filter .2s ease; }
+    html.dark-mode .social-icon--itch{ filter:invert(1); }
 
     .btn:hover {
       background: rgba(42, 42, 42, 0.06);
@@ -350,7 +352,7 @@
 
         <div class="socials" aria-label="Sosyal bağlantılar">
           <a class="btn" href="https://flowkareinxd.itch.io" target="_blank" rel="noopener noreferrer" aria-label="itch.io">
-            <img class="social-icon" src="/assets/itchio-logo-textless-black.svg" alt="" aria-hidden="true">
+            <img class="social-icon social-icon--itch" src="/assets/itchio-logo-textless-black.svg" alt="" aria-hidden="true">
             itch.io
           </a>
 
@@ -368,14 +370,14 @@
         <footer class="site-footer">
           <div class="small" id="copyright-year">© 2025 Murat Can Sarıyıldız</div>
           <div class="small">•</div>
-          <div class="small" data-i18n="footer_cv">CV dosyanız henüz eklenmedi</div>
+          <div class="small" data-i18n="footer_cv">Dijital oyun tasarımı portfolyosu</div>
         </footer>
       </aside>
 
       <!-- RIGHT: panel with content sections -->
       <section class="panel" aria-label="Projeler ve bağlantılar">
         <div class="intro">
-          <p class="bio" data-i18n="bio">Merhaba ben Murat Can — oyun tasarımı üzerine eğitim alıyorum. Burada projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.</p>
+          <p class="bio" data-i18n="bio">Merhaba ben Murat Can — Dijital oyun tasarımı üzerine eğitim alıyorum. Bu sayfada projelerimi, kaynaklarımı ve iletişim bilgilerimi bulabilirsiniz.</p>
         </div>
       </section>
     </div>
@@ -461,9 +463,8 @@
         tr: {
           title: 'Murat Can Sarıyıldız',
           role: 'Dijital Oyun Tasarımı Öğrencisi · Dijital Oyun Tutkunu',
-          bio: 'Merhaba ben Murat Can — Dijital oyun tasarımı üzerine eğitim alıyorum. Burada projelerim, kaynaklar ve iletişim bilgilerim olacak. Projeleri daha sonra ekleyeceğim.',
-          footer_cv: 'CV dosyanız henüz eklenmedi',
-          cv_btn: 'CV (henüz eklenmedi)',
+          bio: 'Merhaba ben Murat Can — Dijital oyun tasarımı üzerine eğitim alıyorum. Bu sayfada projelerimi, kaynaklarımı ve iletişim bilgilerimi bulabilirsiniz.',
+          footer_cv: 'Dijital oyun tasarımı portfolyosu',
           projects_title: 'Öne Çıkan Projeler',
           filter_all: 'Tümü',
           filter_level_design: 'Level Design',
@@ -472,9 +473,8 @@
         en: {
           title: 'Murat Can Sarıyıldız',
           role: 'Digital Game Design Student · Video Game Enthusiast',
-          bio: "Hey, I'm Murat Can — studying Digital game design. This is where I'll keep my projects, resources, and contact info. I'll be adding projects soon.",
-          footer_cv: 'CV not added yet',
-          cv_btn: 'CV (not added yet)',
+          bio: "Hey, I'm Murat Can — a Digital Game Design student. You can find my projects, resources, and contact information on this page.",
+          footer_cv: 'Digital game design portfolio',
           projects_title: 'Featured Projects',
           filter_all: 'All',
           filter_level_design: 'Level Design',
